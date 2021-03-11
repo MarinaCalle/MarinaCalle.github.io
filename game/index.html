@@ -29,25 +29,25 @@ scene.add(avatar);
 avatar.position.set(0,25,0);
     
 //manoderecha
-var mano = new THREE.SphereGeometry(50,100,100);
+var mano = new THREE.SphereGeometry(40,100,100);
 var manoderecha = new THREE.Mesh(mano, cover);
-manoderecha.position.set(-150,0,0);
+manoderecha.position.set(-130,0,0);
 scene.add(manoderecha);
     
 //manoizquierda
 var manoizquierda = new THREE.Mesh(mano, cover);
-manoizquierda.position.set(150,0,0);
+manoizquierda.position.set(130,0,0);
 scene.add(manoizquierda);
     
 //piederecho
-var pie = new THREE.SphereGeometry(50,100,100);
+var pie = new THREE.SphereGeometry(40,100,100);
 var piederecho = new THREE.Mesh(pie,cover);
-piederecho.position.set(75, -125,0);
+piederecho.position.set(73, -120,0);
 scene.add(piederecho);
     
 // pieizquierdo
 var pieizquierdo = new THREE.Mesh(pie,cover);
-pieizquierdo.position.set(-75, -125,0);
+pieizquierdo.position.set(-73, -120,0);
 scene.add(pieizquierdo);
 
 // cabeza
@@ -56,6 +56,16 @@ var cara = new THREE.Mesh(cabeza,cover);
 cara.position.set(0,200,0);
 scene.add(cara);
     
+//ojo1
+var ojo = new THREE.SphereGeometry (10,100,100);
+var ojo1 = new THREE.Mesh(ojo,cover);
+ojo1.position.set(30,200,60);
+scene.add(ojo1);
+    
+//ojo2
+var ojo2 = new THREE.Mesh(ojo,cover);
+ojo2.position.set(-30,200,60);
+scene.add(ojo2);
     
 
 
