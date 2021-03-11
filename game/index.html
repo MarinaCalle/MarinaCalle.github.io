@@ -20,18 +20,13 @@
 
   // ******** START CODING ON THE NEXT LINE ********
     
-    
-    //segunda luz
-light2 = new THREE.DirectionalLight('white',1)
-light2.position.set(100,200,10);
-scene.add(light2);
-
 
 // cuerpo
-var body = new THREE.SphereGeometry(100,100,100);
+var body = new THREE.CylinderGeometry(30,100,150,100);
 var cover = new THREE.MeshNormalMaterial(flat);
 var avatar = new THREE.Mesh(body, cover);
 scene.add(avatar);
+avatar.position.set(0,25,0);
     
 //manoderecha
 var mano = new THREE.SphereGeometry(50,100,100);
@@ -45,7 +40,7 @@ manoizquierda.position.set(150,0,0);
 scene.add(manoizquierda);
     
 //piederecho
-var pie = new THREE.SphereGeometry(50,100,10t0);
+var pie = new THREE.SphereGeometry(50,100,100);
 var piederecho = new THREE.Mesh(pie,cover);
 piederecho.position.set(75, -125,0);
 scene.add(piederecho);
@@ -54,6 +49,12 @@ scene.add(piederecho);
 var pieizquierdo = new THREE.Mesh(pie,cover);
 pieizquierdo.position.set(-75, -125,0);
 scene.add(pieizquierdo);
+
+// cabeza
+var cabeza = new THREE.SphereGeometry (70,100,100);
+var cara = new THREE.Mesh(cabeza,cover);
+cara.position.set(0,200,0);
+scene.add(cara);
     
     
 
