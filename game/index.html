@@ -19,7 +19,7 @@
   document.body.appendChild(renderer.domElement);
 
   // ******** START CODING ON THE NEXT LINE ********
-    
+   
 
 // cuerpo
 var body = new THREE.CylinderGeometry(30,100,150,100);
@@ -27,51 +27,58 @@ var cover = new THREE.MeshNormalMaterial(flat);
 var avatar = new THREE.Mesh(body, cover);
 scene.add(avatar);
 avatar.position.set(0,25,0);
-    
+   
 //manoderecha
 var mano = new THREE.SphereGeometry(40,100,100);
 var manoderecha = new THREE.Mesh(mano, cover);
 manoderecha.position.set(-130,0,0);
-scene.add(manoderecha);
-    
+avatar.add(manoderecha);
+   
 //manoizquierda
 var manoizquierda = new THREE.Mesh(mano, cover);
 manoizquierda.position.set(130,0,0);
-scene.add(manoizquierda);
-    
+avatar.add(manoizquierda);
+   
 //piederecho
 var pie = new THREE.SphereGeometry(40,100,100);
 var piederecho = new THREE.Mesh(pie,cover);
-piederecho.position.set(73, -120,0);
-scene.add(piederecho);
-    
+piederecho.position.set(73, -135,0);
+avatar.add(piederecho);
+   
 // pieizquierdo
 var pieizquierdo = new THREE.Mesh(pie,cover);
-pieizquierdo.position.set(-73, -120,0);
-scene.add(pieizquierdo);
+pieizquierdo.position.set(-73, -135,0);
+avatar.add(pieizquierdo);
 
 // cabeza
 var cabeza = new THREE.SphereGeometry (70,100,100);
 var cara = new THREE.Mesh(cabeza,cover);
-cara.position.set(0,200,0);
-scene.add(cara);
-    
+cara.position.set(0,170,0);
+avatar.add(cara);
+   
 //ojo1
 var ojo = new THREE.SphereGeometry (10,100,100);
 var ojo1 = new THREE.Mesh(ojo,cover);
-ojo1.position.set(30,200,60);
-scene.add(ojo1);
-    
+ojo1.position.set(30,170,60);
+avatar.add(ojo1);
+   
 //ojo2
 var ojo2 = new THREE.Mesh(ojo,cover);
-ojo2.position.set(-30,200,60);
-scene.add(ojo2);
-    
+ojo2.position.set(-30,170,60);
+avatar.add(ojo2);
+   
 
 
 
 
 
   // Now, show what the camera sees on the screen:
-  renderer.render(scene, camera);
+ 
+function animate(){
+    requestAnimationFrame(animate);
+    avatar.rotation.z=avatar.rotation.z+0.01;
+    renderer.render(scene, camera);
+}
+    animate();
+ 
 </script>
