@@ -74,11 +74,13 @@ avatar.add(ojo2);
 
   // Now, show what the camera sees on the screen:
  
+var isCartwheeling = true;
 function animate(){
     requestAnimationFrame(animate);
-    avatar.rotation.z=avatar.rotation.z+0.01;
+    if (isCartwheeling){
+    avatar.rotation.z=avatar.rotation.z+0.01;}
     renderer.render(scene, camera);
-}
+    }
     animate();
  
 </script>
