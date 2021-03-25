@@ -74,19 +74,24 @@ avatar.add(ojo2);
 
   // Now, show what the camera sees on the screen:
  
-document.addEventListener('keydown', sendKeyDown);
+
+
+    var isCartwheeling = true
+    function animate(){
+    requestAnimationFrame(animate);
+        if (isCartwheeling) {avatar.rotation.z =avatar.rotation.z + 0.05;}    
+    renderer.render(scene, camera);
+}
+    animate();
+    
+    document.addEventListener('keydown', sendKeyDown);
 function sendKeyDown(event){
   var code = event.code;
     if (code == 'ArrowLeft') avatar.position.x = avatar.position.x -= 5;
     if (code == 'ArrowRight') avatar.position.x = avatar.position.x += 5;
     if (code == 'ArrowUp') avatar.position.x = avatar.position.z += 5;
     if (code == 'ArrowDown') avatar.position.x = avatar.position.z -= 5;
+    isCartwheeling = !isCartwheeling;
     }
-function animate(){
-    requestAnimationFrame(animate);
-    //avatar.rotation.z =avatar.rotation.z + 0.05;
-    renderer.render(scene, camera);
-}
-    animate();
  
 </script>
