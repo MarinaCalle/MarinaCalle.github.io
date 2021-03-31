@@ -66,6 +66,29 @@ avatar.add(ojo1);
 var ojo2 = new THREE.Mesh(ojo,cover);
 ojo2.position.set(-30,170,60);
 avatar.add(ojo2);
+    
+    
+//arbol
+function hacerArbol (x,z){
+    var tronco = new THREE.Mesh (
+    new THREE.CylinderGeometry (50,50,200),
+    new THREE.MeshBasicMaterial ({color: 'sienna'})
+    );
+    var copa = new THREE.Mesh(
+    new THREE.SphereGeometry (150),
+    new THREE.MeshBasicMaterial({color: 'forestgreen'})
+    );
+    copa.position.y = 175;
+    tronco.add(copa);
+    
+    tronco.position.set(x, -75,z);
+    scene.add(tronco);
+}
+    
+    hacerArbol( 500, 0);
+    hacerArbol(-500, 0);
+    hacerArbol(750, -1000);
+    hacerArbol(-750, -1000);
    
 
 
@@ -76,12 +99,18 @@ avatar.add(ojo2);
  
 
 
-    var isCartwheeling = true
-    function animate(){
-    requestAnimationFrame(animate);
-        if (isCartwheeling) {avatar.rotation.z =avatar.rotation.z + 0.05;}    
-    renderer.render(scene, camera);
-}
+    var isCartwheeling = false;
+    var isFlipping = false;
+    function animate(){      
+        requestAnimationFrame(animate);
+        if (isCartwheeling) {
+            avatar.rotation.z =avatar.rotation.z + 0.05;
+        }    
+        if (isFlipping){
+            avatar.rotation.z =avatar.rotation.z + 0.05;
+        }
+        renderer.render(scene, camera)
+    }
     animate();
     
     document.addEventListener('keydown', sendKeyDown);
@@ -91,7 +120,9 @@ function sendKeyDown(event){
     if (code == 'ArrowRight') avatar.position.x = avatar.position.x += 5;
     if (code == 'ArrowUp') avatar.position.x = avatar.position.z += 5;
     if (code == 'ArrowDown') avatar.position.x = avatar.position.z -= 5;
-    isCartwheeling = !isCartwheeling;
-    }
+    
+    if (code == 'KeyC')isCartwheeling = !isCartwheeling;
+    if (code == 'KeyF') isFlipping = !isFlipping;
+}
  
 </script>
