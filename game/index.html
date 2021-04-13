@@ -10,7 +10,8 @@
   // The "camera" is what sees the stuff:
   var aspectRatio = window.innerWidth / window.innerHeight;
   var camera = new THREE.PerspectiveCamera(75, aspectRatio, 1, 10000);
-  camera.position.z = 500;
+  camera.position.z = 4000;
+  camera.position.y = 3000;
   scene.add(camera);
 
   // The "renderer" draws what the camera sees onto the screen:
@@ -84,13 +85,33 @@ function hacerArbol (x,z){
     tronco.position.set(x, -75,z);
     scene.add(tronco);
 }
+
     
-    hacerArbol( 500, 0);
-    hacerArbol(-500, 0);
-    hacerArbol(750, -1000);
-    hacerArbol(-750, -1000);
+//Campo arboles
+function crearCampoArboles(minimo_x,maximo_x,minimo_z,maximo_z,distancia_arboles){
+    for (var x=minimo_x; x<=maximo_x; x= x+distancia_arboles){
+    for (var z=minimo_z; z<=maximo_z; z= z+distancia_arboles){
+         hacerArbol(x,z);   
+    }
+}
+    } 
+    
+//var distancia_arboles = 500;
+//var minimo_x = -2000;
+//var maximo_x = 2000;
+//var minimo_z = -2000;
+//var maximo_z = 2000;
+
+crearCampoArboles(-2000,2000,-2000,2000,500)
+        
+    //hacerArbol( 500, 0);
+    //hacerArbol(-500, 0);
+    //hacerArbol(750, -1000);
+    //hacerArbol(-750, -1000);
    
 
+    //Vista camara campo arboles
+camera.lookAt(avatar.position);
 
 
 
