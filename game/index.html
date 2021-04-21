@@ -131,20 +131,20 @@ crearCampoArboles(-2000,2000,-2000,2000,500)
     function animate(){      
         requestAnimationFrame(animate);
         if (isCartwheeling) {
-            avatar.rotation.z =avatar.rotation.z + 0.05;
+            avatar.rotation.z = avatar.rotation.z ;
         }    
         if (isFlipping){
-            avatar.rotation.z =avatar.rotation.z + 0.05;
+           avatar.rotation.z = avatar.rotation.z;
         }
         renderer.render(scene, camera)
-    }
+   }
     animate();
     
     document.addEventListener('keydown', sendKeyDown);
 function sendKeyDown(event){
   var code = event.code;
-    if (code == 'ArrowLeft') marcador.position.x = marcador.position.x -= 5;
-    if (code == 'ArrowRight') marcador.position.x = marcador.position.x += 5;
+    if (code == 'ArrowLeft') marcador.rotation.y = marcador.rotation.y -= 0.05;
+    if (code == 'ArrowRight') marcador.rotation.y = marcador.rotation.y += 0.05;
     if (code == 'ArrowUp') marcador.position.z = marcador.position.z -= 5;
     if (code == 'ArrowDown') marcador.position.z = marcador.position.z += 5;
     
