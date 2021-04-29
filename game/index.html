@@ -38,27 +38,27 @@ avatar.position.set(0,0,0);
 //manoderecha
 var mano = new THREE.SphereGeometry(40,100,100);
 var manoderecha = new THREE.Mesh(mano, cover);
-manoderecha.position.set(-130,0,0);
+manoderecha.position.set(-130,-15,0);
 avatar.add(manoderecha);
    
 //manoizquierda
 var manoizquierda = new THREE.Mesh(mano, cover);
-manoizquierda.position.set(130,0,0);
+manoizquierda.position.set(130,-15,0);
 avatar.add(manoizquierda);
    
 //piederecho
 var pie = new THREE.SphereGeometry(40,100,100);
 var piederecho = new THREE.Mesh(pie,cover);
-piederecho.position.set(73, -135,0);
+piederecho.position.set(73, -140,0);
 avatar.add(piederecho);
    
 // pieizquierdo
 var pieizquierdo = new THREE.Mesh(pie,cover);
-pieizquierdo.position.set(-73, -135,0);
+pieizquierdo.position.set(-73, -140,0);
 avatar.add(pieizquierdo);
 
 // cabeza
-var cabeza = new THREE.SphereGeometry (70,100,100);
+var cabeza = new THREE.SphereGeometry (70,75,100);
 var cara = new THREE.Mesh(cabeza,cover);
 cara.position.set(0,170,0);
 avatar.add(cara);
@@ -74,8 +74,12 @@ var ojo2 = new THREE.Mesh(ojo,cover);
 ojo2.position.set(-30,170,60);
 avatar.add(ojo2);
     
+
     
-//arbol
+    
+var notAllowed = [];
+
+    //arbol
 function hacerArbol (x,z){
     var tronco = new THREE.Mesh (
     new THREE.CylinderGeometry (50,50,200),
@@ -90,7 +94,18 @@ function hacerArbol (x,z){
     
     tronco.position.set(x, -75,z);
     scene.add(tronco);
-}
+
+    var boundary = new THREE.Mesh(
+    new THREE.CircleGeometry(150),
+    new THREE.MeshNormalMaterial(),
+    );
+    boundary.position.y = -100
+    boundary.rotation.x= -Math.PI/2;
+    tronco.add(boundary);
+    
+    notAllowed.push(boundary);
+    }
+    
 
     
 //Campo arboles
@@ -104,7 +119,7 @@ function crearCampoArboles(minimo_x,maximo_x,minimo_z,maximo_z,distancia_arboles
  
     
 
-crearCampoArboles(-2000,2000,-2000,2000,700)
+crearCampoArboles(-2000,2000,-2000,2000,800)
         
     //hacerArbol( 500, 0);
     //hacerArbol(-500, 0);
@@ -124,7 +139,6 @@ crearCampoArboles(-2000,2000,-2000,2000,700)
 
   // Now, show what the camera sees on the screen:
  
-
 
    var isCartwheeling = true;
     var isFlipping = true;
@@ -152,7 +166,8 @@ function sendKeyDown(event){
     
     if (code == 'KeyC')isCartwheeling = !isCartwheeling;
     if (code == 'KeyF') isFlipping = !isFlipping;
-}
+        
+    }
     
 function avanzar(objeto, radianes, atras = false){
     if (atras){
@@ -163,8 +178,21 @@ function avanzar(objeto, radianes, atras = false){
     console.log("Cos(radianes):" + Math.cos(radianes));
     console.log("Sin(radianes):" + Math.sin(radianes));
 
-    objeto.position.x += -5*Math.sin(radianes);
-    objeto.position.z += -5*Math.cos(radianes);
+ var inc_x = -5*Math.sin(radianes);
+ var inc_z = -5*Math.cos(radianes);
+    
+    if (isColliding()){
+    objeto.position.x -= inc_x;
+    objeto.position.z -= inc_z;
+    }
+}
+    
+function isColliding () {
+    var vector = new THREE.Vector3(0, -1, 0);
+    var raycaster = new THREE.Raycaster (marcador.position, vector);
+    var intersects = raycaster.intersectObjects(notAllowed);
+    if (intersects.length > 0) return true;
+    return false;
 }
 
  
