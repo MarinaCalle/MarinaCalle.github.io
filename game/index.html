@@ -93,18 +93,18 @@ function hacerArbol (x,z){
     tronco.add(copa);
     
     tronco.position.set(x, -75,z);
-    scene.add(tronco);
+  
 
     var boundary = new THREE.Mesh(
-    new THREE.CircleGeometry(150),
+    new THREE.CircleGeometry(275),
     new THREE.MeshNormalMaterial(),
     );
     boundary.position.y = -100
     boundary.rotation.x= -Math.PI/2;
     tronco.add(boundary);
-    
     notAllowed.push(boundary);
-    }
+    scene.add(tronco);
+}
     
 
     
@@ -154,20 +154,44 @@ crearCampoArboles(-2000,2000,-2000,2000,800)
    }
     animate();
     
+    
+    function isColliding () {
+    var vector = new THREE.Vector3(0, -1, 0);
+    var raycaster = new THREE.Raycaster (marcador.position, vector);
+    
+    var intersects = raycaster.intersectObjects(notAllowed);
+    if (intersects.length > 0) return true;
+    
+    return false;
+}
+
+    
+
+    
  
     
     document.addEventListener('keydown', sendKeyDown);
 function sendKeyDown(event){
   var code = event.code;
-    if (code == 'ArrowLeft') marcador.rotation.y = marcador.rotation.y -= 0.05;
+    if (code == 'ArrowLeft') {
+        marcador.rotation.y = marcador.rotation.y -= 0.05;
+        isMovingLeft = true;
+        } 
     if (code == 'ArrowRight') marcador.rotation.y = marcador.rotation.y += 0.05;
     if (code == 'ArrowUp') avanzar(marcador,marcador.rotation.y, false);
     if (code == 'ArrowDown') avanzar(marcador,marcador.rotation.y, true);
     
     if (code == 'KeyC')isCartwheeling = !isCartwheeling;
     if (code == 'KeyF') isFlipping = !isFlipping;
-        
+    
+    if (isColliding()){
+        if (isMovingLeft) marcador.position.x = marcador.position.x + 5;
+        if (isMovingRight) marcador.position.x = marcador.position.x - 5;
+        if (isMovingForward) marcador.position.z = marcador.position.z + 5;
+        if (isMovingBack) marcador.position.z = marcador.position.z - 5;
     }
+        
+}
     
 function avanzar(objeto, radianes, atras = false){
     if (atras){
@@ -178,21 +202,13 @@ function avanzar(objeto, radianes, atras = false){
     console.log("Cos(radianes):" + Math.cos(radianes));
     console.log("Sin(radianes):" + Math.sin(radianes));
 
- var inc_x = -5*Math.sin(radianes);
- var inc_z = -5*Math.cos(radianes);
+    objeto.position.x += -5*Math.sin(radianes);
+    objeto.position.z += -5*Math.cos(radianes);
     
     if (isColliding()){
-    objeto.position.x -= inc_x;
-    objeto.position.z -= inc_z;
+    objeto.position.x -= objeto.position.x;
+    objeto.position.z -= objeto.position.z;
     }
-}
-    
-function isColliding () {
-    var vector = new THREE.Vector3(0, -1, 0);
-    var raycaster = new THREE.Raycaster (marcador.position, vector);
-    var intersects = raycaster.intersectObjects(notAllowed);
-    if (intersects.length > 0) return true;
-    return false;
 }
 
  
