@@ -138,6 +138,21 @@ crearCampoArboles(-2000,2000,-2000,2000,800)
 
 
   // Now, show what the camera sees on the screen:
+    
+    
+//función colisionar    
+    
+function isColliding () {
+    var vector = new THREE.Vector3(0, -1, 0);
+    var raycaster = new THREE.Raycaster (marcador.position, vector);
+    
+    var intersects = raycaster.intersectObjects(notAllowed);
+        
+    if (intersects.length > 0) return true;
+    
+    return false;
+}   
+    
  
 
    var isCartwheeling = true;
@@ -154,29 +169,12 @@ crearCampoArboles(-2000,2000,-2000,2000,800)
    }
     animate();
     
-    
-    function isColliding () {
-    var vector = new THREE.Vector3(0, -1, 0);
-    var raycaster = new THREE.Raycaster (marcador.position, vector);
-    
-    var intersects = raycaster.intersectObjects(notAllowed);
-    if (intersects.length > 0) return true;
-    
-    return false;
-}
-
-    
-
-    
- 
+     
     
     document.addEventListener('keydown', sendKeyDown);
 function sendKeyDown(event){
   var code = event.code;
-    if (code == 'ArrowLeft') {
-        marcador.rotation.y = marcador.rotation.y -= 0.05;
-        isMovingLeft = true;
-        } 
+    if (code == 'ArrowLeft') marcador.rotation.y = marcador.rotation.y -= 0.05; 
     if (code == 'ArrowRight') marcador.rotation.y = marcador.rotation.y += 0.05;
     if (code == 'ArrowUp') avanzar(marcador,marcador.rotation.y, false);
     if (code == 'ArrowDown') avanzar(marcador,marcador.rotation.y, true);
@@ -184,12 +182,6 @@ function sendKeyDown(event){
     if (code == 'KeyC')isCartwheeling = !isCartwheeling;
     if (code == 'KeyF') isFlipping = !isFlipping;
     
-    if (isColliding()){
-        if (isMovingLeft) marcador.position.x = marcador.position.x + 5;
-        if (isMovingRight) marcador.position.x = marcador.position.x - 5;
-        if (isMovingForward) marcador.position.z = marcador.position.z + 5;
-        if (isMovingBack) marcador.position.z = marcador.position.z - 5;
-    }
         
 }
     
@@ -202,12 +194,14 @@ function avanzar(objeto, radianes, atras = false){
     console.log("Cos(radianes):" + Math.cos(radianes));
     console.log("Sin(radianes):" + Math.sin(radianes));
 
-    objeto.position.x += -5*Math.sin(radianes);
-    objeto.position.z += -5*Math.cos(radianes);
+    var inc_x = -5*Math.sin(radianes);
+    var inc_z = -5*Math.cos(radianes);
+    objeto.position.x += inc_x ;
+    objeto.position.z += inc_z;
     
     if (isColliding()){
-    objeto.position.x -= objeto.position.x;
-    objeto.position.z -= objeto.position.z;
+    objeto.position.x -=  inc_x ;
+    objeto.position.z -= inc_z;
     }
 }
 
