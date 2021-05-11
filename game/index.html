@@ -1,5 +1,7 @@
 <body></body>
 <script src="/lib/three.js"></script>
+<script src ="/lib/Scoreboard.js"></script>
+<script src ="/lib/tween.umd.js"></script>
 <script>
   // The "scene" is where stuff in our game will happen:
   var scene = new THREE.Scene();
@@ -78,6 +80,7 @@ avatar.add(ojo2);
     
     
 var notAllowed = [];
+var treeTops = [];
 
     //arbol
 function hacerArbol (x,z){
@@ -104,6 +107,9 @@ function hacerArbol (x,z){
     tronco.add(boundary);
     notAllowed.push(boundary);
     scene.add(tronco);
+    
+    treeTops.push(top);
+    
 }
     
 
@@ -135,7 +141,20 @@ crearCampoArboles(-2000,2000,-2000,2000,800)
     //avatar.add(camera);
     //scene.add(avatar);
     
-
+    
+//Marcador
+var scoreboard = new Scoreboard();
+    scoreboard.countdown(45);
+    scoreboard.score();
+    scoreboard.help(
+    'Arrow keys to move.' + 
+    'Space bar to jump for fruit.' +
+    'Watch for shaking trees with fruit.' +
+    'Get near the tree and jump before the fruit is gone!');
+    scoreboard.onTimeExpired(timeExpired);
+    function timeExpired(){
+        scoreboard.message("Game Over!");
+    }
 
   // Now, show what the camera sees on the screen:
     
@@ -153,7 +172,44 @@ function isColliding () {
     return false;
 }   
     
- 
+
+    //Funcion frutas
+    var treasureTreeNumber;
+    function updateTreasureTreeNumber (){
+        var rand = Math.random() * treeTops.length;
+        treasureTreeNumber = Math.floor(rand);
+    }
+    
+//Agitar arbol
+
+function shakeTreasureTree() {
+    updateTreasureTreeNumber();
+    
+    var tween = new TWEEN.Tween({shake: 0});
+    tween.to ({shake: 20 * 2 * Math.PI}, 8*1000);
+    tween.onUpdate (shakeTreeUpdate);
+    tween.onComplete(shakeTreeComplete);
+    tween.start();
+}
+    
+function shakeTreeUpdate(update){
+    var top = treeTops[treasureTreeNumber];
+    top.position.x = 50*Math.sin(update.shake);
+}
+    
+function shakeTreeComplete(){
+    var top = treeTops[treasureTreeNumber];
+    top.position.x = 0;
+    setTimeout(shakeTreasureTree, 2*1000);
+}   
+    
+shakeTreasureTree();
+
+    
+
+    
+    
+    
 
    var isCartwheeling = true;
     var isFlipping = true;
@@ -182,9 +238,55 @@ function sendKeyDown(event){
     if (code == 'KeyC')isCartwheeling = !isCartwheeling;
     if (code == 'KeyF') isFlipping = !isFlipping;
     
+    if (code == 'Space') jump();
+    
         
 }
+    //Funcion saltar
+function jump(){
+    if (avatar.position.y > 0) return;
+    checkForTreasure();
+    animateJump();
+}
     
+function checkForTreasure (){
+    var top = treeTops [treasureTreeNumber];
+    var tree = top.parent;
+    var p1= tree.position;
+    var p2 = marcador.position;
+    var xDiff = p1.x - p2.x;
+    var zDiff = p1.z - p2.z;
+    
+    var distance = Math.sqrt(xDiff*xDiff + zDiff*zDiff);
+    if (distance < 500) scorePoints();
+}
+    
+    
+function scorePoints(){
+    if (scoreboard.getTimeRemaining() ==0)return;
+    scoreboard.addPoints(10);
+}
+    
+    
+//Animación saltar
+function animateJump(){
+    var tween = new TWEEN.Tween({jump: 0});
+    tween.to({jump: Math.PI}, 400);
+    tween.onUpdate (animateJumpUpdate);
+    tween.onComplete(animateJumpComplete);
+    tween.start();
+}
+    
+function animateJumpUpdate(update){
+    avatar.position.y = 100 * Math.sin(update.jump);
+}
+    
+function animateJumpComplete(){
+    avatar.position.y = 0;
+}
+    
+    
+
 function avanzar(objeto, radianes, atras = false){
     if (atras){
         radianes = radianes + Math.PI;
